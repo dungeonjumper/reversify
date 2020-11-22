@@ -1,0 +1,4 @@
+name: spotify
+recipe: lemp
+config:
+  webroot: dist

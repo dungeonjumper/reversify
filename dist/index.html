@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Displaying User Data</h1>
+    <p>Log in with your Spotify account and this demo will display information about you fetched using the Spotify Web API</p>
+    <button class="btn btn-primary" id="btn-login">Login</button>
+    <div id="result"></div>
+  </div>
+  <script id="result-template" type="text/x-handlebars-template">
+      <dl>
+        <img src="{{images.0.url}}">
+        <dt>User Name</dt>
+        <dd>{{id}}</dd>
+        <dt>Display Name</dt>
+        <dd>{{display_name}}</dd>
+        <dt>Country</dt>
+        <dd>{{country}}</dd>
+        <dt>Followers</dt>
+        <dd>{{followers.total}}</dd>
+        <dt>Profile</dt>
+        <dd><a href="{{external_urls.spotify}}" target="_blank">{{external_urls.spotify}}</a></dd>
+        <dt>Email</dt>
+        <dd>{{email}}</dd>
+        <dt>Product</dt>
+        <dd>{{product}}</dd>
+      </dl>
+  </script>
+  <script src="site.bundle.js"></script>
+</body>
+</html>
