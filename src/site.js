@@ -32,15 +32,25 @@ import Handlebars from 'handlebars';
       );
   }
 
-  function displayArtists(items) {
-    items.sort(function (a, b) {
-      return a.followers.total - b.followers.total;
-    });
-    var templateSource = document.getElementById('result-template').innerHTML,
-        template = Handlebars.compile(templateSource),
-        resultsPlaceholder = document.getElementById('result');
-    resultsPlaceholder.innerHTML = template({items});
-    console.log(items);
+  function getArtists(time_range) {
+    spotifyApi
+    .getMyTopArtists({time_range:time_range, limit: 50, offset: 0})
+    .then(
+      function (data) {
+        const items = data.items;
+        items.sort(function (a, b) {
+          return a.followers.total - b.followers.total;
+        });
+        const templateSource = document.getElementById('result-template').innerHTML,
+            template = Handlebars.compile(templateSource),
+            resultsPlaceholder = document.getElementById('result');
+        resultsPlaceholder.innerHTML = template({items});
+        console.log(items);
+      },
+      function (err) {
+        console.error(err);
+      }
+    );
   }
 
   var spotifyApi = new SpotifyWebApi();
@@ -52,16 +62,16 @@ import Handlebars from 'handlebars';
   if (localStorage.getItem('spotifyAccessToken')) {
     const accessToken = localStorage.getItem('spotifyAccessToken');
     spotifyApi.setAccessToken(accessToken);
-    spotifyApi
-    .getMyTopArtists({time_range:'long_term', limit: 50, offset: 0})
-    .then(
-      function (data) {
-        displayArtists(data.items);
-      },
-      function (err) {
-        console.error(err);
-      }
-    );
+    getArtists('long_term');
+
+    const buttons = document.querySelectorAll("button.options");
+    buttons.forEach(button => {
+      button.addEventListener('click', function() {
+        getArtists(button.id);
+      });
+    });
+
+
   }
   else {
     // no access token

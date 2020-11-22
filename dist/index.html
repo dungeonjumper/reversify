@@ -10,13 +10,19 @@
     <h1>Displaying User Data</h1>
     <p>Log in with your Spotify account and this demo will display information about you fetched using the Spotify Web API</p>
     <button class="btn btn-primary" id="btn-login">Login</button>
+    <div>
+      Filter By:
+      <button class="options" id="short_term">Last Month</button>
+      <button class="options" id="medium_term">Last 6 Months</button>
+      <button class="options" id="long_term">All Time</button>
+    </div>
     <div id="result">
     </div>
   </div>
   <script id="result-template" type="text/x-handlebars-template">
     <ul>
     {{#each items }}
-      <li>{{ this.name }}</li>
+      <li>{{ this.name }} - {{ this.followers.total }} </li>
     {{/each}}
     </ul>
   </script>
