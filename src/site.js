@@ -1,4 +1,6 @@
 import SpotifyWebApi from 'spotify-web-api-js';
+import Handlebars from 'handlebars';
+
 (function() {
 
   function login() {
@@ -30,19 +32,36 @@ import SpotifyWebApi from 'spotify-web-api-js';
       );
   }
 
-  var spotifyApi = new SpotifyWebApi();
-  var templateSource = document.getElementById('result-template').innerHTML,
-      template = Handlebars.compile(templateSource),
-      resultsPlaceholder = document.getElementById('result'),
-      loginButton = document.getElementById('btn-login');
+  function displayArtists(items) {
+    items.sort(function (a, b) {
+      return a.followers.total - b.followers.total;
+    });
+    var templateSource = document.getElementById('result-template').innerHTML,
+        template = Handlebars.compile(templateSource),
+        resultsPlaceholder = document.getElementById('result');
+    resultsPlaceholder.innerHTML = template({items});
+    console.log(items);
+  }
 
-  loginButton.addEventListener('click', function() {
+  var spotifyApi = new SpotifyWebApi();
+
+  document.getElementById('btn-login').addEventListener('click', function() {
     login();
   });
 
   if (localStorage.getItem('spotifyAccessToken')) {
     const accessToken = localStorage.getItem('spotifyAccessToken');
     spotifyApi.setAccessToken(accessToken);
+    spotifyApi
+    .getMyTopArtists({time_range:'long_term', limit: 50, offset: 0})
+    .then(
+      function (data) {
+        displayArtists(data.items);
+      },
+      function (err) {
+        console.error(err);
+      }
+    );
   }
   else {
     // no access token
