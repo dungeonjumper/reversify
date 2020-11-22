@@ -1,6 +1,7 @@
+import SpotifyWebApi from 'spotify-web-api-js';
 (function() {
 
-  function login(callback) {
+  function login() {
     var CLIENT_ID = 'e39538aff1874f5993e1ff9c5b9b84a9';
     var REDIRECT_URI = 'http://spotify.lndo.site/authenticate/';
     function getLoginURL(scopes) {
@@ -9,7 +10,10 @@
         '&scope=' + encodeURIComponent(scopes.join(' ')) +
         '&response_type=token';
     }
-    var url = getLoginURL(['user-read-email']);
+    var url = getLoginURL([
+      'user-read-email',
+      'user-top-read',
+    ]);
     var width = 450,
         height = 730,
         left = (screen.width / 2) - (width / 2),
@@ -17,7 +21,7 @@
     window.addEventListener("message", function(event) {
       var hash = JSON.parse(event.data);
       if (hash.type == 'access_token') {
-        callback(hash.access_token);
+        localStorage.setItem('spotifyAccessToken', hash.access_token);
       }
     }, false);
     var w = window.open(url,
@@ -26,28 +30,22 @@
       );
   }
 
-  function getUserData(accessToken) {
-    return $.ajax({
-      url: 'https://api.spotify.com/v1/me',
-      headers: {
-        'Authorization': 'Bearer ' + accessToken
-      }
-    });
-  }
-
+  var spotifyApi = new SpotifyWebApi();
   var templateSource = document.getElementById('result-template').innerHTML,
       template = Handlebars.compile(templateSource),
       resultsPlaceholder = document.getElementById('result'),
       loginButton = document.getElementById('btn-login');
 
   loginButton.addEventListener('click', function() {
-    login(function(accessToken) {
-      getUserData(accessToken)
-      .then(function(response) {
-        loginButton.style.display = 'none';
-        resultsPlaceholder.innerHTML = template(response);
-      });
-    });
+    login();
   });
+
+  if (localStorage.getItem('spotifyAccessToken')) {
+    const accessToken = localStorage.getItem('spotifyAccessToken');
+    spotifyApi.setAccessToken(accessToken);
+  }
+  else {
+    // no access token
+  }
 
 })();
