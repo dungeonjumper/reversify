@@ -36,16 +36,20 @@ import Handlebars from 'handlebars';
     spotifyApi
     .getMyTopArtists({time_range:time_range, limit: 50, offset: 0})
     .then(
-      function (data) {
-        const items = data.items;
-        items.sort(function (a, b) {
-          return a.followers.total - b.followers.total;
-        });
-        const templateSource = document.getElementById('result-template').innerHTML,
-            template = Handlebars.compile(templateSource),
-            resultsPlaceholder = document.getElementById('result');
-        resultsPlaceholder.innerHTML = template({items});
-        console.log(items);
+      function (artists) {
+        spotifyApi.getMe(artists).then(
+          function (me) {;
+            const items = artists.items;
+            items.sort(function (a, b) {
+              return a.followers.total - b.followers.total;
+            });
+            const resultTitle = me.display_name + ' Reversify Lineup',
+                  templateSource = document.getElementById('result-template').innerHTML,
+                  template = Handlebars.compile(templateSource),
+                  resultsPlaceholder = document.getElementById('results');
+            resultsPlaceholder.innerHTML = template({items: items, resultTitle: resultTitle});
+          }
+        )
       },
       function (err) {
         console.error(err);
