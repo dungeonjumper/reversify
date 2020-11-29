@@ -3,7 +3,7 @@ import Handlebars from 'handlebars';
 
 (function() {
 
-  function login() {
+  function login(callback) {
     var CLIENT_ID = 'e39538aff1874f5993e1ff9c5b9b84a9';
     var REDIRECT_URI = 'http://spotify.lndo.site/authenticate/';
     function getLoginURL(scopes) {
@@ -24,6 +24,7 @@ import Handlebars from 'handlebars';
       var hash = JSON.parse(event.data);
       if (hash.type == 'access_token') {
         localStorage.setItem('spotifyAccessToken', hash.access_token);
+        callback(hash.access_token);
       }
     }, false);
     var w = window.open(url,
@@ -61,22 +62,23 @@ import Handlebars from 'handlebars';
   var spotifyApi = new SpotifyWebApi();
 
   document.getElementById('btn-login').addEventListener('click', function() {
-    login();
+    login(function(accessToken) {
+      spotifyApi.setAccessToken(accessToken);
+      getArtists('long_term');
+    });
+  });
+
+  const buttons = document.querySelectorAll("button.options");
+  buttons.forEach(button => {
+    button.addEventListener('click', function() {
+      getArtists(button.id);
+    });
   });
 
   if (localStorage.getItem('spotifyAccessToken')) {
     const accessToken = localStorage.getItem('spotifyAccessToken');
     spotifyApi.setAccessToken(accessToken);
     getArtists('long_term');
-
-    const buttons = document.querySelectorAll("button.options");
-    buttons.forEach(button => {
-      button.addEventListener('click', function() {
-        getArtists(button.id);
-      });
-    });
-
-
   }
   else {
     // no access token
