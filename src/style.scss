@@ -1,0 +1,26 @@
+.container {
+  max-width: 768px;
+  margin: 0 auto;
+  text-align: center;
+}
+#results {
+  margin: 0 auto;
+  ul {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    li {
+      margin: 0.5em;
+      .artist {
+        font-size: 1em;
+      }
+      .followers {
+        font-size: 0.8em;
+      }
+    }
+  }
+}

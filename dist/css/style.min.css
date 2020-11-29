@@ -1,0 +1,1 @@
+.container{max-width:768px;margin:0 auto;text-align:center}#results{margin:0 auto}#results ul{display:flex;flex-flow:wrap;justify-content:center;align-items:center;margin:0;padding:0;list-style-type:none}#results ul li{margin:0.5em}#results ul li .artist{font-size:1em}#results ul li .followers{font-size:0.8em}

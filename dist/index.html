@@ -4,26 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style.min.css">
-  <title>Spotify App</title>
+  <title>Reversify</title>
 </head>
 <body>
   <div class="container">
-    <h1>Displaying User Data</h1>
-    <p>Log in with your Spotify account and this demo will display information about you fetched using the Spotify Web API</p>
-    <button class="btn btn-primary" id="btn-login">Login</button>
+    <h1>Reversify</h1>
+    <p>Reversify takes your top artists on Spotify and orders them by inverse popularity, displaying your lesser followed artists first. Get your hipster cred in here.</p>
+    <button class="btn btn-primary" id="btn-login">Connect to Spotify to Get Started</button>
     <div>
       Filter By:
       <button class="options" id="short_term">Last Month</button>
       <button class="options" id="medium_term">Last 6 Months</button>
       <button class="options" id="long_term">All Time</button>
     </div>
-    <div id="result">
+    <div id="results">
     </div>
   </div>
   <script id="result-template" type="text/x-handlebars-template">
+    <h2>{{ resultTitle }}</h2>
     <ul>
     {{#each items }}
-      <li>{{ this.name }} - {{ this.followers.total }} </li>
+      <li>
+        <span class="artist">{{ this.name }}</span>
+        <span class="followers">{{ this.followers.total }}</span>
+      </li>
     {{/each}}
     </ul>
   </script>

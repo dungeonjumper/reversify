@@ -43,7 +43,8 @@ import Handlebars from 'handlebars';
             items.sort(function (a, b) {
               return a.followers.total - b.followers.total;
             });
-            const resultTitle = me.display_name + ' Reversify Lineup',
+            
+            const resultTitle = me.display_name + (me.display_name.slice(-1) != 's' ? '\'s' : '\'') + ' Reversify Lineup',
                   templateSource = document.getElementById('result-template').innerHTML,
                   template = Handlebars.compile(templateSource),
                   resultsPlaceholder = document.getElementById('results');
