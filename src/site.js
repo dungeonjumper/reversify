@@ -46,10 +46,11 @@ import Handlebars from 'handlebars';
             });
             
             const resultTitle = me.display_name + (me.display_name.slice(-1) != 's' ? '\'s' : '\'') + ' Reversify Lineup',
+                  resultTimeFrame = document.getElementById(time_range).innerHTML,
                   templateSource = document.getElementById('result-template').innerHTML,
                   template = Handlebars.compile(templateSource),
                   resultsPlaceholder = document.getElementById('results');
-            resultsPlaceholder.innerHTML = template({items: items, resultTitle: resultTitle});
+            resultsPlaceholder.innerHTML = template({items: items, resultTitle: resultTitle, resultTimeFrame: resultTimeFrame});
           }
         )
       },
