@@ -5,7 +5,7 @@ import Handlebars from 'handlebars';
 
   function login(callback) {
     var CLIENT_ID = 'e39538aff1874f5993e1ff9c5b9b84a9';
-    var REDIRECT_URI = 'http://spotify.lndo.site/authenticate/';
+    var REDIRECT_URI = 'https://dungeonjumper.github.io/reversify/authenticate/';
     function getLoginURL(scopes) {
       return 'https://accounts.spotify.com/authorize?client_id=' + CLIENT_ID +
         '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
