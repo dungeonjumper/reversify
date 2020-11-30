@@ -1,4 +1,4 @@
-name: spotify
+name: reversify
 recipe: lemp
 config:
-  webroot: dist
+  webroot: docs
