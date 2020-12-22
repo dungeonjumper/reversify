@@ -62,10 +62,16 @@ import Handlebars from 'handlebars';
 
   var spotifyApi = new SpotifyWebApi();
 
-  document.getElementById('btn-login').addEventListener('click', function() {
+  const loginButton = document.getElementById('btn-login');
+  const filterButtons = document.getElementById('filter_by');
+
+  filterButtons.style.display = "none";
+  loginButton.addEventListener('click', function() {
     login(function(accessToken) {
       spotifyApi.setAccessToken(accessToken);
       getArtists('long_term');
+      loginButton.style.display = "none";
+      filterButtons.style.display = "block";
     });
   });
 
@@ -80,6 +86,8 @@ import Handlebars from 'handlebars';
     const accessToken = localStorage.getItem('spotifyAccessToken');
     spotifyApi.setAccessToken(accessToken);
     getArtists('long_term');
+    loginButton.style.display = "none";
+    filterButtons.style.display = "block";
   }
   else {
     // no access token
