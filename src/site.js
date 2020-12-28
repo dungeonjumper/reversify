@@ -6,6 +6,7 @@ import Handlebars from 'handlebars';
   function login(callback) {
     var CLIENT_ID = 'e39538aff1874f5993e1ff9c5b9b84a9';
     var REDIRECT_URI = 'https://dungeonjumper.github.io/reversify/authenticate/';
+    // var REDIRECT_URI = 'http://reversify.lndo.site/authenticate/';
     function getLoginURL(scopes) {
       return 'https://accounts.spotify.com/authorize?client_id=' + CLIENT_ID +
         '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
@@ -39,12 +40,14 @@ import Handlebars from 'handlebars';
     .then(
       function (artists) {
         spotifyApi.getMe(artists).then(
-          function (me) {;
+          function (me) {
             const items = artists.items;
             items.sort(function (a, b) {
               return a.followers.total - b.followers.total;
             });
             
+            loginButton.style.display = "none";
+            filterButtons.style.display = "block";
             const resultTitle = me.display_name + (me.display_name.slice(-1) != 's' ? '\'s' : '\'') + ' Reversify Lineup',
                   resultTimeFrame = document.getElementById(time_range).innerHTML,
                   templateSource = document.getElementById('result-template').innerHTML,
@@ -62,16 +65,14 @@ import Handlebars from 'handlebars';
 
   var spotifyApi = new SpotifyWebApi();
 
-  const loginButton = document.getElementById('btn-login');
-  const filterButtons = document.getElementById('filter_by');
+  var loginButton = document.getElementById('btn-login');
+  var filterButtons = document.getElementById('filter_by');
 
   filterButtons.style.display = "none";
   loginButton.addEventListener('click', function() {
     login(function(accessToken) {
       spotifyApi.setAccessToken(accessToken);
       getArtists('long_term');
-      loginButton.style.display = "none";
-      filterButtons.style.display = "block";
     });
   });
 
@@ -86,8 +87,6 @@ import Handlebars from 'handlebars';
     const accessToken = localStorage.getItem('spotifyAccessToken');
     spotifyApi.setAccessToken(accessToken);
     getArtists('long_term');
-    loginButton.style.display = "none";
-    filterButtons.style.display = "block";
   }
   else {
     // no access token
